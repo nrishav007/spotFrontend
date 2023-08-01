@@ -35,8 +35,23 @@ import {
   getUserDJSearchList,
 } from "../../Redux/AppReducer/Action";
 import { useNavigate } from "react-router-dom";
+import { DJDataShow } from "./UserNearbyDJS";
+import axios from "axios";
+import CustomSlider from "../../Components/CustomSlider";
 
 const UserDjs = () => {
+  var settings = {
+    dots: true, // Show dots navigation
+    infinite: true, // Enable infinite loop
+    speed: 500, // Transition speed in milliseconds
+    autoplaySpeed: 5000, // Time in milliseconds before sliding to the next one (5 seconds in this example)
+    slidesToShow: 1, // Number of slides to show at once
+    slidesToScroll: 1, // Number of slides to scroll at once
+    autoplay: true, // Enable autoplay
+    arrows: true, // Show arrows navigation
+    adaptiveHeight: true,
+    pauseOnHover: false, // Pause autoplay when hovering over the slider
+  };
   const [price, setPrice] = useState(10);
   const [location, setLocation] = useState(5);
   const [payload, setPayload] = useState({});
@@ -111,6 +126,7 @@ const UserDjs = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [DJWeek,setDJWeek]=useState([]);
   const handleSearchDJ = () => {
     const data = {
       pricing: price,
@@ -127,6 +143,23 @@ const UserDjs = () => {
   useEffect(() => {
     dispatch(getUserDJList(token, toast));
   }, [dispatch, toast, token]);
+  useEffect(()=>{
+    try {
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/djOfWeek/display-dj-of-week`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res)=>{
+        setDJWeek(res.data.data.djOfWeek);
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },[])
   let genre = [
     "sp1",
     "sp2",
@@ -339,9 +372,9 @@ const UserDjs = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Box minH={"800px"} p={"20px"}>
-        <Box w={"100%"}>
-          <Image borderRadius={"15px"} w={"100%"} src={djBanner} />
+      <Box minH={"800px"} m={"20px"}>
+        <Box ml={"10px"}>
+        <CustomSlider settings={settings} data={DJWeek}  />
         </Box>
         <Flex justifyContent={"space-between"} mt={"40px"} mb={"10px"}>
           <Center>
@@ -379,120 +412,13 @@ const UserDjs = () => {
                 djData.length > 0 &&
                 djData?.map((el, i) => {
                   return (
-                    <Box
-                      color={"white"}
-                      borderRadius={"15px"}
-                      key={i}
-                      p={"10px"}
-                      bgColor={i % 2 === 0 ? "#63D471" : "#B16668"}
-                      onClick={() => handleSingleDJ(el)}
-                    >
-                      <Flex
-                        gap={"10px"}
-                        direction={[
-                          "column",
-                          "column",
-                          "column",
-                          "column",
-                          "row",
-                        ]}
-                      >
-                        <Image
-                          borderRadius={"15px"}
-                          w={"100px"}
-                          h={"100px"}
-                          src={el.profileImage}
-                        />
-                        <Box textAlign={"left"} w={"full"}>
-                          <Flex justifyContent={"space-between"} gap={"10px"}>
-                            <Flex
-                              gap={"5px"}
-                              fontSize={"12px"}
-                              direction={["column", "row", "row", "row", "row"]}
-                            >
-                              {genre.map((elem, i) => {
-                                let name = elem;
-                                if (el[name] !== "") {
-                                  return <Text key={i}>{el[name]}</Text>;
-                                }
-                              })}
-                            </Flex>
-                            <Box fontSize={"20px"}>
-                              <RxDotsVertical />
-                            </Box>
-                          </Flex>
-                          <Text fontWeight={"bold"} fontSize={"22px"}>
-                            {el.djName || "No Name"}
-                          </Text>
-                          <Flex gap={"5px"} fontSize={"14px"}>
-                            <Center>
-                              <BsFillCalendarEventFill />
-                            </Center>
-                            <Center>
-                              <Text>Until</Text>
-                            </Center>
-                            <Center>
-                              <Text>Apr 26, 2023</Text>
-                            </Center>
-                          </Flex>
-                          <Flex justifyContent={"space-between"}>
-                            <Flex
-                              gap={"10px"}
-                              direction={["column", "row", "row", "row", "row"]}
-                            >
-                              <Center>
-                                {el.avgRating <= 1 ? (
-                                  <Flex>
-                                    <AiFillStar />
-                                  </Flex>
-                                ) : el.avgRating <= 2 ? (
-                                  <Flex>
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                  </Flex>
-                                ) : el.avgRating <= 3 ? (
-                                  <Flex>
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                  </Flex>
-                                ) : el.avgRating <= 4 ? (
-                                  <Flex>
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                  </Flex>
-                                ) : el.avgRating <= 5 ? (
-                                  <Flex>
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                    <AiFillStar />
-                                  </Flex>
-                                ) : null}
-                              </Center>
-                              <Center>
-                                <Text fontSize={"13px"}>
-                                  {el.avgRating} Rating
-                                </Text>
-                              </Center>
-                            </Flex>
-                            <Box
-                              h={"30px"}
-                              p={"7px"}
-                              w={"30px"}
-                              borderRadius={"50%"}
-                              bgColor={"white"}
-                              color={i % 2 === 0 ? "#63D471" : "#B16668"}
-                            >
-                              <BsFillPlayFill />
-                            </Box>
-                          </Flex>
-                        </Box>
-                      </Flex>
-                    </Box>
+                    <DJDataShow
+                      el={el}
+                      i={i}
+                      token={token}
+                      genre={genre}
+                      handleSingleDJ={handleSingleDJ}
+                    />
                   );
                 })}
             </SimpleGrid>
