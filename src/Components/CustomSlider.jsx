@@ -24,9 +24,9 @@ const CustomSlider = ({
   return (
     <Slider {...settings}>
       {data.map(
-        ({ djName, image, likeCount, totalEventDuration, totalGigs }) => {
+        ({ djName, image, likeCount, totalEventDuration,rating, totalGigs }) => {
           return (
-            <SliderCard djName={djName} image={image} likeCount={likeCount} totalEventDuration={formatMinutesToTime(totalEventDuration)} totalGigs={totalGigs} />
+            <SliderCard djName={djName} image={image} likeCount={likeCount} totalEventDuration={formatMinutesToTime(totalEventDuration)} totalGigs={totalGigs} rating={rating} />
           );
         }
       )}

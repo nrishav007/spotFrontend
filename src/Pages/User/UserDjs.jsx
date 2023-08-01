@@ -373,7 +373,7 @@ const UserDjs = () => {
         </ModalContent>
       </Modal>
       <Box minH={"800px"} m={"20px"}>
-        <Box ml={"10px"}>
+        <Box w={"100%"}>
         <CustomSlider settings={settings} data={DJWeek}  />
         </Box>
         <Flex justifyContent={"space-between"} mt={"40px"} mb={"10px"}>

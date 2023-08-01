@@ -1,13 +1,15 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { IoHeartCircle } from "react-icons/io5";
-
+import { AiFillStar } from "react-icons/ai";
+import { FaBookmark } from "react-icons/fa";
 const SliderCard = ({
   djName,
   image,
   description,
   likeCount,
   totalEventDuration,
+  rating,
   totalGigs,
 }) => {
   return (
@@ -25,26 +27,44 @@ const SliderCard = ({
         backgroundPosition: "center",
       }}
     >
-      <Box ml={"47%"} color={"white"}>
+      <Flex flexDirection={"row-reverse"} pr={"40px"} m={0}  position={"relative"} top={-3} right={0}>
+          <Box fontSize={"80px"} ml={"-15px"} color={"#FEA801"}>
+            <FaBookmark />
+          </Box>
+          <Box position={"relative"} color={"white"} top={5} left={12}>
+            <Flex gap={"5px"} flexDirection={"row-reverse"} fontSize={"8px"} textAlign={"right"}>
+              <AiFillStar/>
+              <AiFillStar/>
+              <AiFillStar/>
+              <AiFillStar/>
+            </Flex>
+            <Center>
+            <Text>{rating ||"4.0"}</Text>
+            </Center>
+          </Box>
+        </Flex>
+      <Box ml={"47%"}mt={"-40px"} color={"white"}>
+        
         <Text pt={"40px"}>DJ OF THE WEEK</Text>
         <Text mt={"20px"} fontWeight={"bold"}>
           {djName}
         </Text>
         <Text>{description}</Text>
         <Flex mt={"30px"}>
-          <Box fontSize={"25px"}>
+          {/* like */}
+          {/* <Box fontSize={"25px"}>
             <IoHeartCircle />
           </Box>
-          <Text mr={"10px"} fontWeight={"bold"}>{likeCount} Likes</Text>
+          <Text mr={"10px"} fontWeight={"bold"}>{likeCount} Likes</Text> */}
           <Center>
-            <Box
+            <Box mr={"5px"}
               bgColor={"white"}
               borderRadius={"50%"}
-              w={"8px"}
-              h={"8px"}
+              w={"5px"}
+              h={"5px"}
             ></Box>
           </Center>
-          <Text mr={"10px"}>{totalGigs}Gigs,</Text>
+          <Text mr={"5px"}>{totalGigs}Gigs,</Text>
           <Text>{totalEventDuration}</Text>
         </Flex>
       </Box>
