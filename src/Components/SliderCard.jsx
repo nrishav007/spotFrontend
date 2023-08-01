@@ -56,14 +56,14 @@ const SliderCard = ({
             <IoHeartCircle />
           </Box>
           <Text mr={"10px"} fontWeight={"bold"}>{likeCount} Likes</Text> */}
-          <Center>
+          {/* <Center>
             <Box mr={"5px"}
               bgColor={"white"}
               borderRadius={"50%"}
               w={"5px"}
               h={"5px"}
             ></Box>
-          </Center>
+          </Center> */}
           <Text mr={"5px"}>{totalGigs}Gigs,</Text>
           <Text>{totalEventDuration}</Text>
         </Flex>
